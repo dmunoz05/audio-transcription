@@ -21,15 +21,14 @@ jobs:
       - name: Deploy to VPS
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} << 'EOF'
+            # Navegar al directorio del proyecto
             cd /var/www/html/d10/api
 
-            # Si no existe el directorio, crearlo
-            if [ ! -d ".git" ]; then
-              git clone https://github.com/dmunoz05/audio-transcription .
-            else
-              git reset --hard
-              git pull origin main
-            fi
+            # Elimina todos los archivos, incluyendo ocultos
+            rm -rf /var/www/html/d10/api/* /var/www/html/d10/api/.*
+
+            # Clonar repositorio
+            git clone https://github.com/dmunoz05/audio-transcription .
 
             # Copiar variables de entorno
             cp /var/www/html/params/d10/env_api/.env /var/www/html/d10/api
