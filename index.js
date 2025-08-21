@@ -89,7 +89,7 @@ app.post("/transcribe", async (req, res) => {
     });
 
     // 7) Responder
-    res.json({ transcription });
+    res.json({ transcription: transcription });
   } catch (err) {
     return res.status(500).json({ error: String(err.message || err) });
   }
