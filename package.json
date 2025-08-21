@@ -1,0 +1,26 @@
+{
+  "name": "audio-transcription",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "build": "echo \"Building the project...\"",
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "crypto": "^1.0.1",
+    "express": "^5.1.0",
+    "ffmpeg-static": "^5.2.0",
+    "fs": "^0.0.1-security",
+    "multer": "^2.0.2",
+    "nodemon": "^3.1.10"
+  }
+}
