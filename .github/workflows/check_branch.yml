@@ -1,0 +1,18 @@
+name: Check Pull Request Branch
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-branch:
+    runs-on: ubuntu-latest
+    if: github.repository == 'dmunoz05/audio-transcription'
+    steps:
+      - name: Check if pull request is from 'laboratory'
+        if: github.event.pull_request.base.ref == 'main' && github.event.pull_request.head.ref != 'laboratory'
+        run: |
+          echo "Pull requests to main must originate from the 'laboratory' branch."
+          exit 1
+        shell: bash
