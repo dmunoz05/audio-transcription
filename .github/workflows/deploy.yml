@@ -1,0 +1,43 @@
+name: Deploy API to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.repository == 'dmunoz05/audio-transcription'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.VPS_KEY }}
+
+      - name: Deploy to VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} << 'EOF'
+            cd /var/www/html/d10/api
+
+            # Si no existe el directorio, crearlo
+            if [ ! -d ".git" ]; then
+              git clone https://github.com/dmunoz05/audio-transcription .
+            else
+              git reset --hard
+              git pull origin main
+            fi
+
+            # Copiar variables de entorno
+            cp /var/www/html/params/d10/env_api/.env /var/www/html/d10/api
+
+            # Instalar dependencias
+            npm install --production
+
+            # Reiniciar con PM2
+            pm2 restart audio-api || pm2 start index.js --name audio-api
+            pm2 save
+          EOF
