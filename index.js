@@ -1,11 +1,11 @@
-import express from "express";
 import { spawn } from "child_process";
-import path from "path";
 import { fileURLToPath } from "url";
 import ffmpeg from "ffmpeg-static";
+import express from "express";
+import dotenv from "dotenv";
+import path from "path";
 import fs from "fs";
 import os from "os";
-import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -78,7 +78,7 @@ app.post("/transcribe", async (req, res) => {
     });
 
     // 5) Leer JSON generado
-    const jsonPath = isWindows ? `${wavPath}.out.json` : `${wavPath}.wav.out.json`;
+    const jsonPath = `${wavPath}.out.json`;
     const json = JSON.parse(fs.readFileSync(jsonPath, "utf8"));
 
     const transcription = json.transcription?.[0]?.text || "Valida la salida del modelo";
